@@ -1,0 +1,187 @@
+/* =============================================================
+   DroneLENS — Global Styles
+   Tailwind v4 · CSS-first configuration
+   ============================================================= */
+
+/* Importa o core do Tailwind v4 (sem tailwind.config.js) */
+@import "tailwindcss";
+
+/* -----------------------------------------------------------
+   Dark mode via classe `.dark` no <html> (next-themes)
+   @custom-variant sobrescreve o padrão de media query
+   ----------------------------------------------------------- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* -----------------------------------------------------------
+   Design tokens — cores, fontes, animações
+   Definidos aqui são acessíveis como Tailwind utilities:
+   e.g. `bg-brand-blue`, `text-brand-cyan`
+   ----------------------------------------------------------- */
+@theme {
+  /* Paleta de marca */
+  --color-brand-blue:   #0055FF;
+  --color-brand-cyan:   #00C2FF;
+  --color-brand-gold:   #FFB800;
+  --color-brand-dark:   #080D1A;
+
+  /* Superfícies escuras */
+  --color-dark-900:  #080D1A;
+  --color-dark-800:  #0D1525;
+  --color-dark-700:  #162136;
+  --color-dark-600:  #1E2D4A;
+
+  /* Tipografia */
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-body:    'Inter',         ui-sans-serif, system-ui, sans-serif;
+
+  /* Animações custom registradas como Tailwind utilities */
+  --animate-marquee:    marquee 50s linear infinite;
+  --animate-float:      float 6s ease-in-out infinite;
+  --animate-glow-pulse: glow-pulse 3s ease-in-out infinite;
+  --animate-fade-in:    fade-in 0.8s ease forwards;
+}
+
+/* -----------------------------------------------------------
+   Keyframes
+   ----------------------------------------------------------- */
+
+/* Carrossel de portfólio — movimento contínuo da esquerda */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Flutuação suave para elementos decorativos */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-12px) rotate(1deg); }
+  66%       { transform: translateY(-6px) rotate(-1deg); }
+}
+
+/* Pulso de brilho na cor da marca */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 85, 255, 0.2), 0 0 40px rgba(0, 194, 255, 0.1); }
+  50%       { box-shadow: 0 0 40px rgba(0, 85, 255, 0.5), 0 0 80px rgba(0, 194, 255, 0.3); }
+}
+
+/* Entrada suave para elementos */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* -----------------------------------------------------------
+   Base — variáveis CSS para modo claro/escuro
+   Referenciadas por var(--*) em componentes e Tailwind
+   ----------------------------------------------------------- */
+@layer base {
+
+  /* Modo claro (padrão) */
+  :root {
+    --bg:          #FAFAFA;
+    --bg-card:     #FFFFFF;
+    --surface:     #F0F4FF;
+    --text:        #0A0F1E;
+    --text-muted:  #64748B;
+    --border:      rgba(0, 0, 0, 0.08);
+    --brand:       #0055FF;
+    --brand-light: #3378FF;
+    --brand-glow:  rgba(0, 85, 255, 0.15);
+  }
+
+  /* Modo escuro — sobrescrito pelo `.dark` via next-themes */
+  .dark {
+    --bg:          #080D1A;
+    --bg-card:     #0D1525;
+    --surface:     #162136;
+    --text:        #EEF2FF;
+    --text-muted:  #94A3B8;
+    --border:      rgba(255, 255, 255, 0.07);
+    --brand:       #4488FF;
+    --brand-light: #66A0FF;
+    --brand-glow:  rgba(68, 136, 255, 0.2);
+  }
+
+  /* Rolagem suave global */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Transições suaves ao trocar de tema */
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
+  }
+
+  /* Remove outline padrão e adiciona custom acessível */
+  *:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Seleção de texto com cores da marca */
+  ::selection {
+    background: var(--brand);
+    color: #fff;
+  }
+}
+
+/* -----------------------------------------------------------
+   Utilities custom
+   ----------------------------------------------------------- */
+@layer utilities {
+
+  /* Gradiente de texto com cores da marca */
+  .text-gradient {
+    background: linear-gradient(135deg, var(--brand) 0%, #00C2FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glassmorphism — fundo translúcido com blur */
+  .glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .glass-light {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+
+  /* Gradiente de marca (background) */
+  .bg-brand-gradient {
+    background: linear-gradient(135deg, #0055FF 0%, #00C2FF 100%);
+  }
+
+  /* Glow sutil nos cards */
+  .card-glow:hover {
+    box-shadow:
+      0 0 0 1px var(--brand-glow),
+      0 20px 40px -12px rgba(0, 85, 255, 0.2);
+  }
+
+  /* Scrollbar estilizada */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Pausa da animação no hover (carrossel) */
+  .pause-on-hover:hover > * {
+    animation-play-state: paused;
+  }
+}
